@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
+    const gridSize = 20;
     let snake = [{ x: 10, y: 10 }];
     let direction = "RIGHT";
     let apple = spawnApple();
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function startGame() {
-        gameInterval = setInterval(updateGame, 100);
+        gameInterval = setInterval(updateGame, 150);
         document.addEventListener("keydown", changeDirection);
     }
 
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function checkCollisions() {
         let head = snake[0];
-        if (head.x < 0 || head.y < 0 || head.x >= canvas.width / 20 || head.y >= canvas.height / 20) {
+        if (head.x < 0 || head.y < 0 || head.x >= canvas.width / gridSize || head.y >= canvas.height / gridSize) {
             endGame();
         }
         for (let i = 1; i < snake.length; i++) {
@@ -63,25 +64,27 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function drawGame() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         ctx.fillStyle = "red";
-        ctx.fillRect(apple.x * 20, apple.y * 20, 20, 20);
+        ctx.fillRect(apple.x * gridSize, apple.y * gridSize, gridSize, gridSize);
         
         ctx.fillStyle = "purple";
         for (let poison of poisonApples) {
-            ctx.fillRect(poison.x * 20, poison.y * 20, 20, 20);
+            ctx.fillRect(poison.x * gridSize, poison.y * gridSize, gridSize, gridSize);
         }
 
         ctx.fillStyle = "white";
         for (let part of snake) {
-            ctx.fillRect(part.x * 20, part.y * 20, 20, 20);
+            ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize, gridSize);
         }
     }
 
     function spawnApple() {
         return {
-            x: Math.floor(Math.random() * (canvas.width / 20)),
-            y: Math.floor(Math.random() * (canvas.height / 20))
+            x: Math.floor(Math.random() * (canvas.width / gridSize)),
+            y: Math.floor(Math.random() * (canvas.height / gridSize))
         };
     }
 
